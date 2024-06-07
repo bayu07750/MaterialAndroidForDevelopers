@@ -54,6 +54,7 @@ The app is still in its early stages of development, and many changes may occur 
 - [Dagger-hilt](https://github.com/google/dagger/) - A fast dependency injector for Android and Java.
 - [Timber](https://github.com/JakeWharton/timber) - A logger with a small, extensible API which provides utility on top of Android's normal Log class.
 - [Firebase](https://firebase.google.com/).
+- [CodeView](https://github.com/amrdeveloper/codeview) - Android Library to make it easy to create an Code editor or IDE that support any languages and themes, with auto complete, auto indenting, snippets and more features
 
 ## 👷🏽Building
 
