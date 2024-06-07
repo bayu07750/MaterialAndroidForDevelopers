@@ -21,6 +21,8 @@ Material Android For Developers (MAFD) allows you to explore all components curr
 
 ## 👉 Download the App
 
+Download it on this [page](https://github.com/bayu07750/MaterialAndroidForDevelopers/releases/tag/v0.0.1).
+
 ## 🚧 Status
 
 The app is still in its early stages of development, and many changes may occur in the future. However, I am currently satisfied with its functionality.
@@ -55,7 +57,7 @@ The app is still in its early stages of development, and many changes may occur 
 
 ## 👷🏽Building
 
-First, you need Android Studio Jellyfish or a higher version. You can download Android Studio [disini](https://developer.android.com/studio).
+First, you need Android Studio Jellyfish or a higher version. You can download Android Studio [here](https://developer.android.com/studio).
 
 Clone this repository or download it as a zip file, then open it in Android Studio.
 
