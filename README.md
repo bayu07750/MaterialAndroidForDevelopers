@@ -4,7 +4,7 @@
 <img src="./app/src/main/ic_launcher-playstore.png" alt="" width="25%">
 </p>
 
-Material Android For Developers allows you to explore all components currently supported by Compose Material 3, side by side with the code. Additionally, you can generate color schemes based on a given image.
+Material Android For Developers (MAFD) allows you to explore all components currently supported by Compose Material 3, side by side with the code. Additionally, you can generate color schemes based on a given image.
 
 ## 📸 Screenshot
 
