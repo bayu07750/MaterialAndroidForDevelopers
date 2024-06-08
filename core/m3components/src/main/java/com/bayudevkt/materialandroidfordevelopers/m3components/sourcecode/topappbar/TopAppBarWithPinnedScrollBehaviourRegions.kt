@@ -5,7 +5,7 @@
  
      val code get() = """
  
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TopAppBarWithPinnedScrollBehaviour(
     modifier: Modifier = Modifier,

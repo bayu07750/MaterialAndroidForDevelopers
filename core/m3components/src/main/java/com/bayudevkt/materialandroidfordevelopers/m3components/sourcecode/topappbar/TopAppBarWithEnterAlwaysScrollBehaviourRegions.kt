@@ -5,7 +5,7 @@
  
      val code get() = """
  
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun TopAppBarWithEnterAlwaysScrollBehaviour(
     modifier: Modifier = Modifier,
@@ -25,7 +25,7 @@ fun TopAppBarWithEnterAlwaysScrollBehaviour(
                     }
                 },
                 title = {
-                    Text(text = "TopAppBarWithEnterAlwaysScrollBehaviour", modifier = Modifier.basicMarquee(),)
+                    Text(text = "TopAppBarWithEnterAlwaysScrollBehaviour", modifier = Modifier.basicMarquee())
                 },
                 actions = {
                     IconButton(onClick = { /*TODO*/ }) {
@@ -84,7 +84,14 @@ fun ContentColors(
                         Spacer(modifier = Modifier.height(8.dp))
                         IconButton(
                             onClick = {
-                                context.copyText(color)
+                                // copy text
+                                context.getSystemService(ClipboardManager::class.java)?.let { cm ->
+                                    cm.setPrimaryClip(ClipData.newPlainText("", color))
+                                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+                                        Toast.makeText(context, context.getString(R.string.copied), Toast.LENGTH_SHORT)
+                                            .show()
+                                    }
+                                }
                             }
                         ) {
                             Icon(
