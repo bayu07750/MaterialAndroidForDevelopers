@@ -2,7 +2,7 @@ package com.bayudevkt.materialandroidfordevelopers.ui.utils
 
 import android.content.Context
 import com.amrdeveloper.codeview.CodeView
-import com.bayudevkt.materialandroidfordevelopers.R
+import com.bayudevkt.materialandroidfordevelopers.core.ui.R
 import java.util.regex.Pattern
 
 object KotlinLanguage {

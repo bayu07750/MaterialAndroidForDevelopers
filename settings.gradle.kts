@@ -18,7 +18,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-
-rootProject.name = "Material Android For Developers"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+rootProject.name = "MaterialAndroidForDevelopers"
 include(":app")
 include(":baselineprofile")
+include(":core:m3components")
+include(":core:ui")

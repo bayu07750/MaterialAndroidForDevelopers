@@ -1,0 +1,52 @@
+// This should not be edited instead you can always generate using `source_code_generator.js`.
+
+
+ object TopAppBarWithExitUntilCollapsedScrollBehaviourSourceCode {
+ 
+     val code get() = """
+ 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun TopAppBarWithExitUntilCollapsedScrollBehaviour(
+    modifier: Modifier = Modifier,
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+) {
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+    Scaffold(
+        modifier = modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        contentWindowInsets = contentWindowInsets,
+        topBar = {
+            LargeTopAppBar(
+                scrollBehavior = scrollBehavior,
+                navigationIcon = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = null)
+                    }
+                },
+                title = {
+                    Text(text = "TopAppBarWithExitUntilCollapsedScrollBehaviour", modifier = Modifier.basicMarquee())
+                },
+                actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Default.Edit, contentDescription = null)
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Default.Save, contentDescription = null)
+                    }
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(imageVector = Icons.Default.MoreVert, contentDescription = null)
+                    }
+                }
+            )
+        }
+    ) {
+        ContentColors(
+            modifier = Modifier
+                .padding(it),
+        )
+    }
+}
+
+     """.trimIndent()
+ }

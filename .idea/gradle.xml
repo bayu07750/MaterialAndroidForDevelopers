@@ -11,6 +11,9 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/baselineprofile" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core/m3components" />
+            <option value="$PROJECT_DIR$/core/ui" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

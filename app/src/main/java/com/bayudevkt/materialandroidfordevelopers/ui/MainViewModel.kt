@@ -8,7 +8,7 @@ import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.DarkModeSet
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.FontSetting
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.LanguageSetting
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.ShapeSetting
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.DefaultSeedColor
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.DefaultSeedColor
 import com.bayudevkt.materialandroidfordevelopers.ui.utils.toHex
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted

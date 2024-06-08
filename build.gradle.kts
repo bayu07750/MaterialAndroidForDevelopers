@@ -10,4 +10,5 @@ plugins {
     alias(libs.plugins.google.firebase.performance) apply false
     alias(libs.plugins.android.test) apply false
     alias(libs.plugins.baselineprofile) apply false
+    alias(libs.plugins.android.library) apply false
 }
