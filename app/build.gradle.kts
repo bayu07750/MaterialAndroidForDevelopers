@@ -80,6 +80,9 @@ android {
 
 dependencies {
 
+    implementation(projects.core.m3components)
+    implementation(projects.core.ui)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

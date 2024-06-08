@@ -33,11 +33,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bayudevkt.materialandroidfordevelopers.R
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.AndroidSeedColor
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.DefaultSeedColor
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.KotlinSeedColor
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.MaterialAndroidForDevelopersTheme
+import com.bayudevkt.materialandroidfordevelopers.core.ui.R
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.AndroidSeedColor
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.DefaultSeedColor
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.KotlinSeedColor
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.MaterialAndroidForDevelopersTheme
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable

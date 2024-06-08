@@ -8,7 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.widget.Toast
-import com.bayudevkt.materialandroidfordevelopers.R
+import com.bayudevkt.materialandroidfordevelopers.core.ui.R
 
 fun Context.copyText(value: String) {
     getSystemService(ClipboardManager::class.java)?.let { cm ->

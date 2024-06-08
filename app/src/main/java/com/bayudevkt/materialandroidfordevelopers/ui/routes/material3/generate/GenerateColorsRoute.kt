@@ -59,7 +59,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bayudevkt.materialandroidfordevelopers.R
+import com.bayudevkt.materialandroidfordevelopers.core.ui.R
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.colors.Material3ColorItem
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.colors.rememberMaterial3Colors
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.component.CodeView
@@ -190,7 +190,7 @@ private fun GenerateColorsContent(
     val seedColorsLazyListState = rememberLazyListState()
     val paletteStyleLazyListState = rememberLazyListState()
 
-    MaterialAndroidForDevelopersTheme(
+    com.bayudevkt.materialandroidfordevelopers.core.ui.theme.MaterialAndroidForDevelopersTheme(
         colorScheme = generateColorScheme,
         shapes = settingsStateHolder.Shapes,
         typography = settingsStateHolder.Typography,

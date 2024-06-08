@@ -38,6 +38,7 @@ uiautomator = "2.3.0"
 benchmarkMacroJunit4 = "1.2.4"
 baselineprofile = "1.2.4"
 profileinstaller = "1.3.1"
+material = "1.12.0"
 
 [libraries]
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
@@ -81,6 +82,7 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -93,3 +95,4 @@ google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.
 google-firebase-performance = { id = "com.google.firebase.firebase-perf", version.ref = "performance" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
+android-library = { id = "com.android.library", version.ref = "agp" }

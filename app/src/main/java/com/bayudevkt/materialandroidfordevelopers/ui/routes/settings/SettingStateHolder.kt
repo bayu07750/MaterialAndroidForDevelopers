@@ -14,14 +14,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.core.os.LocaleListCompat
 import com.bayudevkt.materialandroidfordevelopers.domain.model.SettingPreference
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.CutShape
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.DancingScriptTypography
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.DefaultSeedColor
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.DefaultTypography
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.MontserratTypography
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.NoneShape
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.PoppinsTypography
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.RobotoTypography
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.CutShape
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.DancingScriptTypography
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.DefaultSeedColor
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.DefaultTypography
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.MontserratTypography
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.NoneShape
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.PoppinsTypography
+import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.RobotoTypography
 import com.bayudevkt.materialandroidfordevelopers.ui.utils.toHex
 import timber.log.Timber
 

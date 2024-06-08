@@ -12,7 +12,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -21,14 +20,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.bayudevkt.materialandroidfordevelopers.ui.theme.MaterialAndroidForDevelopersTheme
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.navigation.material3Graph
-import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.SettingEnum
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.SettingEnumSaver
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.SettingsBottomSheet
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.SettingsDrawerContent
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.SettingsStateHolder
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.rememberSettingsStateHolder
-import com.bayudevkt.materialandroidfordevelopers.ui.theme.MaterialAndroidForDevelopersTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable

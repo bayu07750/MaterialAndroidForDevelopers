@@ -28,12 +28,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bayudevkt.materialandroidfordevelopers.R
+import com.bayudevkt.materialandroidfordevelopers.core.ui.R
 import com.bayudevkt.materialandroidfordevelopers.ui.MainViewModel
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.defaultLargeTopAppBarColors
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.rememberSettingsStateHolder
 import com.bayudevkt.materialandroidfordevelopers.ui.theme.MaterialAndroidForDevelopersTheme
-import com.bayudevkt.materialandroidfordevelopers.ui.utils.LargeTopAppBarWithBackButton
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import dagger.hilt.android.AndroidEntryPoint
 

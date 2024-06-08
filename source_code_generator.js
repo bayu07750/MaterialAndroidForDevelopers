@@ -6,8 +6,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const srcDir = path.join(__dirname, 'app/src/main/java/com/bayudevkt/materialandroidfordevelopers/ui/components'); // Direktori sumber
-const outputDir = path.join(__dirname, 'app/src/main/java/com/bayudevkt/materialandroidfordevelopers/ui/routes/material3/component/sourcecode'); // Direktori output
+const srcDir = path.join(__dirname, 'core/m3components/src/main/java/com/bayudevkt/materialandroidfordevelopers/m3components/components');
+const outputDir = path.join(__dirname, 'core/m3components/src/main/java/com/bayudevkt/materialandroidfordevelopers/m3components/sourcecode');
 
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });

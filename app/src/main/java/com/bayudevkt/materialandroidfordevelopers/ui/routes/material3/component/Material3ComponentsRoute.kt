@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.bayudevkt.materialandroidfordevelopers.ui.model.CategoryComponent
-import com.bayudevkt.materialandroidfordevelopers.ui.model.Component
-import com.bayudevkt.materialandroidfordevelopers.ui.model.availableMaterial3Components
+import com.bayudevkt.materialandroidfordevelopers.m3components.model.CategoryComponent
+import com.bayudevkt.materialandroidfordevelopers.m3components.model.Component
+import com.bayudevkt.materialandroidfordevelopers.m3components.model.availableMaterial3Components
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.AppListItem
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.BottomRoundedCornerShape
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.FullRoundedCornerShape
@@ -86,7 +86,7 @@ fun LazyListScope.listComponents(
     ) { index, component ->
         AppListItem(
             title = component.title,
-            description = if (component.description != null) stringResource(id = component.description) else "",
+            description = if (component.description != null) stringResource(id = component.description!!) else "",
             icon = Icons.Rounded.Collections,
             onClick = {
                 onComponentItemClicked.invoke(component.title)

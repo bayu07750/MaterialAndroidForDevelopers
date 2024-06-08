@@ -46,7 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bayudevkt.materialandroidfordevelopers.BuildConfig
-import com.bayudevkt.materialandroidfordevelopers.R
+import com.bayudevkt.materialandroidfordevelopers.core.ui.R
 import com.bayudevkt.materialandroidfordevelopers.ui.licenses.LicensesActivity
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.AppListItem
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.AppOutlinedListItem
