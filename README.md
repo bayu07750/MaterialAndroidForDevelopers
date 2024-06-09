@@ -34,12 +34,13 @@ The app is still in its early stages of development, and many changes may occur 
 - Copy the code.
 - Generate Material 3 color schemes based on a given image.
 - Customization options:
-- Dark theme support
-- Change theme
-- Modify shape
-- Change font family
+  - Dark theme support
+  - Change theme
+  - Modify shape
+  - Change font family
 - Support for other languages
 - Survive configuration changes
+- Apply a theme to the app using a color scheme generated from any given image.
 
 ## 🛠️ Tech Stack
 
