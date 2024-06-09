@@ -79,6 +79,7 @@ import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.palette.PalettePlugin
 import com.skydoves.landscapist.palette.rememberPaletteState
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 val ColorSaver
@@ -173,22 +174,19 @@ private fun GenerateColorsContent(
             defaultSeedColor
         )
     }
-    var palette by rememberPaletteState(value = null)
+
     val paletteStyles = remember { PaletteStyle.entries.toList().toImmutableList() }
     var selectedPaletteStyle by rememberSaveable(paletteStyles, stateSaver = PaletteStyleSaver) {
-        mutableStateOf(
-            paletteStyles.first()
-        )
+        mutableStateOf(paletteStyles.first())
     }
     val generateColorScheme = rememberDynamicColorScheme(
         seedColor = selectedSeedColor,
         isDark = settingsStateHolder.isDarkTheme,
         style = selectedPaletteStyle
     )
-    var selectedTabComponent by rememberSaveable(stateSaver = TabComponentSaver) { mutableStateOf(TabComponent.PREVIEW) }
-    val exportGeneratedColors = rememberExportGeneratedColors(colorScheme = generateColorScheme)
-    val seedColorsLazyListState = rememberLazyListState()
-    val paletteStyleLazyListState = rememberLazyListState()
+    var selectedTabComponent by rememberSaveable(stateSaver = TabComponentSaver) {
+        mutableStateOf(TabComponent.PREVIEW)
+    }
 
     com.bayudevkt.materialandroidfordevelopers.core.ui.theme.MaterialAndroidForDevelopersTheme(
         colorScheme = generateColorScheme,
@@ -219,183 +217,232 @@ private fun GenerateColorsContent(
         ) { innerPadding ->
             val reusableModifier = Modifier.padding(innerPadding)
             if (selectedTabComponent == TabComponent.EXPORT) {
-                CodeView(
+                ExportContent(
+                    content = rememberExportGeneratedColors(colorScheme = generateColorScheme),
                     modifier = reusableModifier
-                        .fillMaxSize(),
-                    snippetCode = exportGeneratedColors,
                 )
             } else {
-                val colors = rememberMaterial3Colors(generateColorScheme)
-
-                LazyVerticalGrid(
+                PreviewContent(
+                    colorSchema = generateColorScheme,
+                    selectedImageUri = selectedImageUri,
+                    seedColor = selectedSeedColor,
+                    onChangeSeedColor = { selectedSeedColor = it },
+                    paletteStyles = paletteStyles,
+                    paletteStyle = selectedPaletteStyle,
+                    onChangePaletteStyle = { selectedPaletteStyle = it },
                     modifier = reusableModifier,
-                    columns = GridCells.Adaptive(100.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun PreviewContent(
+    colorSchema: ColorScheme,
+    selectedImageUri: Uri?,
+    seedColor: Color,
+    onChangeSeedColor: (Color) -> Unit,
+    paletteStyles: ImmutableList<PaletteStyle>,
+    paletteStyle: PaletteStyle,
+    onChangePaletteStyle: (PaletteStyle) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = rememberMaterial3Colors(colorSchema)
+    val seedColorsLazyListState = rememberLazyListState()
+    val paletteStyleLazyListState = rememberLazyListState()
+    var palette by rememberPaletteState(value = null)
+
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Adaptive(100.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        /* region section selected image */
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            }
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Box(
+                    modifier = Modifier,
+                    contentAlignment = Alignment.Center
                 ) {
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
+                    CoilImage(
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .width(120.dp)
+                            .aspectRatio(1f / 1f)
+                            .clip(MaterialTheme.shapes.medium),
+                        imageModel = {
+                            selectedImageUri
+                        },
+                        imageOptions = ImageOptions(
+                            contentScale = ContentScale.Crop,
+                        ),
+                        component = rememberImageComponent {
+                            +PalettePlugin {
+                                palette = it
+                            }
+                        },
+                    )
+                    Box(
+                        modifier = Modifier
+                            .graphicsLayer {
+                                translationX = 16.dp.toPx()
+                            }
+                            .align(Alignment.TopEnd)
+                            .size(32.dp)
+                            .background(color = seedColor, shape = CircleShape)
+                    )
+                }
+            }
+        }
+        /* endregion section selected image */
+
+        /* region section seed colors */
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            }
+        ) {
+            Surface(
+                modifier = Modifier
+                    .padding(top = 16.dp),
+                tonalElevation = 2.dp,
+                shape = MaterialTheme.shapes.large
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.seed_colors),
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        state = seedColorsLazyListState,
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
+                        items(palette?.swatches ?: emptyList()) { swatch ->
+                            val color = Color(swatch.rgb)
                             Box(
-                                modifier = Modifier,
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CoilImage(
-                                    modifier = Modifier
-                                        .padding(top = 16.dp)
-                                        .width(120.dp)
-                                        .aspectRatio(1f / 1f)
-                                        .clip(MaterialTheme.shapes.medium),
-                                    imageModel = {
-                                        selectedImageUri
-                                    },
-                                    imageOptions = ImageOptions(
-                                        contentScale = ContentScale.Crop,
-                                    ),
-                                    component = rememberImageComponent {
-                                        +PalettePlugin {
-                                            palette = it
-                                        }
-                                    },
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .graphicsLayer {
-                                            translationX = 16.dp.toPx()
-                                        }
-                                        .align(Alignment.TopEnd)
-                                        .size(32.dp)
-                                        .background(color = selectedSeedColor, shape = CircleShape)
-                                )
-                            }
-                        }
-                    }
-
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
-                    ) {
-                        Surface(
-                            modifier = Modifier
-                                .padding(top = 16.dp),
-                            tonalElevation = 2.dp,
-                            shape = MaterialTheme.shapes.large
-                        ) {
-                            Column(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 16.dp),
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.seed_colors),
-                                    modifier = Modifier.padding(horizontal = 16.dp),
-                                    style = MaterialTheme.typography.labelLarge
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                LazyRow(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    state = seedColorsLazyListState,
-                                    contentPadding = PaddingValues(horizontal = 16.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                ) {
-                                    items(palette?.swatches ?: emptyList()) { swatch ->
-                                        val color = Color(swatch.rgb)
-                                        Box(
-                                            modifier = Modifier
-                                                .clickable(
-                                                    role = Role.Button,
-                                                    onClick = {
-                                                        selectedSeedColor = color
-                                                    }
-                                                )
-                                                .size(44.dp)
-                                                .background(
-                                                    color = color,
-                                                    shape = CircleShape
-                                                )
-                                                .border(
-                                                    width = if (selectedSeedColor == color) 4.dp else 0.dp,
-                                                    color = if (selectedSeedColor == color) MaterialTheme.colorScheme.onSecondaryContainer else Color.Transparent,
-                                                    shape = CircleShape,
-                                                )
-                                        )
-                                    }
-                                }
-                            }
+                                    .clickable(
+                                        role = Role.Button,
+                                        onClick = {
+                                            onChangeSeedColor(color)
+                                        }
+                                    )
+                                    .size(44.dp)
+                                    .background(
+                                        color = color,
+                                        shape = CircleShape
+                                    )
+                                    .border(
+                                        width = if (seedColor == color) 4.dp else 0.dp,
+                                        color = if (seedColor == color) MaterialTheme.colorScheme.onSecondaryContainer else Color.Transparent,
+                                        shape = CircleShape,
+                                    )
+                            )
                         }
-                    }
-
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
-                    ) {
-                        Surface(
-                            modifier = Modifier
-                                .padding(top = 16.dp),
-                            tonalElevation = 2.dp,
-                            shape = MaterialTheme.shapes.large
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 16.dp),
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.palette_style),
-                                    modifier = Modifier.padding(horizontal = 16.dp),
-                                    style = MaterialTheme.typography.labelLarge
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                LazyRow(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    state = paletteStyleLazyListState,
-                                    contentPadding = PaddingValues(horizontal = 16.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                ) {
-                                    itemsIndexed(paletteStyles) { index, paletteStyle ->
-                                        val selected = selectedPaletteStyle == paletteStyle
-                                        InputChip(
-                                            selected = selected,
-                                            onClick = { selectedPaletteStyle = paletteStyle },
-                                            label = {
-                                                Text(text = paletteStyle.name)
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.material_3_colors),
-                            modifier = Modifier
-                                .padding(top = 16.dp),
-                            style = MaterialTheme.typography.labelLarge
-                        )
-                    }
-
-                    items(colors) {
-                        Material3ColorItem(item = it)
                     }
                 }
             }
         }
+        /* endregion section seed colors */
+
+        /* region section palette style */
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            }
+        ) {
+            Surface(
+                modifier = Modifier
+                    .padding(top = 16.dp),
+                tonalElevation = 2.dp,
+                shape = MaterialTheme.shapes.large
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.palette_style),
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        state = paletteStyleLazyListState,
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        itemsIndexed(paletteStyles) { _, style ->
+                            val selected = paletteStyle == style
+                            InputChip(
+                                selected = selected,
+                                onClick = {
+                                    onChangePaletteStyle(style)
+                                },
+                                label = {
+                                    Text(text = style.name)
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        /* endregion section palette style */
+
+        /* region section label material 3 colors */
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            }
+        ) {
+            Text(
+                text = stringResource(R.string.material_3_colors),
+                modifier = Modifier
+                    .padding(top = 16.dp),
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+        /* endregion section label material 3 colors */
+
+        /* region section material 3 colors */
+        items(colors) {
+            Material3ColorItem(item = it)
+        }
+        /* endregion section material 3 colors */
     }
+}
+
+@Composable
+private fun ExportContent(
+    content: String,
+    modifier: Modifier = Modifier
+) {
+    CodeView(
+        modifier = modifier
+            .fillMaxSize(),
+        snippetCode = content,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

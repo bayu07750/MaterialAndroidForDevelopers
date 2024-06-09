@@ -9,5 +9,6 @@ data class SettingPreference(
     val systemTheme: Boolean,
     val shape: String,
     val font: String,
-    val language: String
+    val language: String,
+    val paletteStyle: String,
 )

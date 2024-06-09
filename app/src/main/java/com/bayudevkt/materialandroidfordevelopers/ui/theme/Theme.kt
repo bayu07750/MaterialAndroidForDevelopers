@@ -19,6 +19,7 @@ fun MaterialAndroidForDevelopersTheme(
         dynamicColor = settingsStateHolder.useSystemTheme,
         shapes = settingsStateHolder.Shapes,
         typography = settingsStateHolder.Typography,
+        paletteStyle = settingsStateHolder.paletteStyle,
         content = content,
     )
 }

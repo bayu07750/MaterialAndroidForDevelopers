@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.materialkolor.PaletteStyle
 import com.materialkolor.rememberDynamicColorScheme
 
 @Composable
@@ -25,9 +26,14 @@ fun MaterialAndroidForDevelopersTheme(
     dynamicColor: Boolean = false,
     shapes: Shapes = MaterialTheme.shapes,
     typography: Typography = DefaultTypography,
+    paletteStyle: PaletteStyle = PaletteStyle.TonalSpot,
     content: @Composable () -> Unit
 ) {
-    val generatedColorScheme = rememberDynamicColorScheme(seedColor = seedColor, isDark = darkTheme)
+    val generatedColorScheme = rememberDynamicColorScheme(
+        seedColor = seedColor,
+        isDark = darkTheme,
+        style = paletteStyle,
+    )
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current

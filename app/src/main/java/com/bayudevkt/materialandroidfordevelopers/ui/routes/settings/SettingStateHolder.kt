@@ -23,6 +23,7 @@ import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.NoneShape
 import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.PoppinsTypography
 import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.RobotoTypography
 import com.bayudevkt.materialandroidfordevelopers.ui.utils.toHex
+import com.materialkolor.PaletteStyle
 import timber.log.Timber
 
 @Composable
@@ -41,6 +42,7 @@ fun rememberSettingsStateHolder(
         initialShapeSetting = ShapeSetting.valueOf(settingPreference.shape),
         initialFontSetting = FontSetting.valueOf(settingPreference.font),
         initialLanguageSetting = LanguageSetting.valueOf(settingPreference.language),
+        initialPaletteStyle = PaletteStyle.valueOf(settingPreference.paletteStyle),
         onChangeSettingPreference = onChangeSettingPreference
     )
 }
@@ -53,6 +55,7 @@ fun rememberSettingsStateHolder(
     initialShapeSetting: ShapeSetting = ShapeSetting.Rounded,
     initialFontSetting: FontSetting = FontSetting.Default,
     initialLanguageSetting: LanguageSetting = LanguageSetting.English,
+    initialPaletteStyle: PaletteStyle = PaletteStyle.TonalSpot,
     onChangeSettingPreference: (SettingPreference) -> Unit = {},
 ): SettingsStateHolder {
     val onChangeSettingPreferenceUpdated by rememberUpdatedState(onChangeSettingPreference)
@@ -72,6 +75,7 @@ fun rememberSettingsStateHolder(
             initialShapeSetting = initialShapeSetting,
             initialFontSetting = initialFontSetting,
             initialLanguageSetting = initialLanguageSetting,
+            initialPaletteStyle = initialPaletteStyle,
             onChangeSettingPreference = onChangeSettingPreferenceUpdated,
         )
     }
@@ -84,6 +88,7 @@ class SettingsStateHolder(
     initialShapeSetting: ShapeSetting,
     initialFontSetting: FontSetting,
     initialLanguageSetting: LanguageSetting,
+    initialPaletteStyle: PaletteStyle,
     private val onChangeSettingPreference: (SettingPreference) -> Unit
 ) {
 
@@ -105,6 +110,9 @@ class SettingsStateHolder(
     var languageSetting by mutableStateOf(initialLanguageSetting)
         private set
 
+    var paletteStyle by mutableStateOf(initialPaletteStyle)
+        private set
+
     private val settingPreference
         get() = SettingPreference(
             darkMode = selectedDarkModeSetting.name,
@@ -113,6 +121,7 @@ class SettingsStateHolder(
             shape = shapeSetting.name,
             font = fontSetting.name,
             language = languageSetting.name,
+            paletteStyle = paletteStyle.name
         )
 
     fun onChangeDarkModeSetting(value: DarkModeSetting) {
@@ -147,6 +156,11 @@ class SettingsStateHolder(
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(value.code))
     }
 
+    fun onChangePaletteStyle(value: PaletteStyle) {
+        paletteStyle = value
+        onChangeSettingPreference(settingPreference.copy(paletteStyle = value.name))
+    }
+
     companion object {
         val Saver = listSaver<SettingsStateHolder, Any>(
             save = {
@@ -158,7 +172,8 @@ class SettingsStateHolder(
                     it.useSystemTheme,
                     it.shapeSetting.name,
                     it.fontSetting.name,
-                    it.languageSetting.name
+                    it.languageSetting.name,
+                    it.paletteStyle.name
                 )
             },
             restore = {
@@ -173,6 +188,7 @@ class SettingsStateHolder(
                     initialShapeSetting = ShapeSetting.valueOf(it[5] as String),
                     initialFontSetting = FontSetting.valueOf(it[6] as String),
                     initialLanguageSetting = LanguageSetting.valueOf(it[7] as String),
+                    initialPaletteStyle = PaletteStyle.valueOf(it[8] as String),
                     onChangeSettingPreference = {},
                 )
             }

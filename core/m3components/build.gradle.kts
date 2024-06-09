@@ -55,4 +55,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.material.kolor)
 }

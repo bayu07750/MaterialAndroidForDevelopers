@@ -10,6 +10,7 @@ import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.LanguageSet
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.ShapeSetting
 import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.DefaultSeedColor
 import com.bayudevkt.materialandroidfordevelopers.ui.utils.toHex
+import com.materialkolor.PaletteStyle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -23,6 +24,7 @@ val defaultSettingPreference = SettingPreference(
     shape = ShapeSetting.Rounded.name,
     font = FontSetting.Default.name,
     language = LanguageSetting.English.name,
+    paletteStyle = PaletteStyle.TonalSpot.name
 )
 
 @HiltViewModel
