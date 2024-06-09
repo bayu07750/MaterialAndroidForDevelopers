@@ -21,7 +21,7 @@ Material Android For Developers (MAFD) allows you to explore all components curr
 
 ## 👉 Download the App
 
-Download it on this [page](https://github.com/bayu07750/MaterialAndroidForDevelopers/releases/tag/v0.0.1).
+Download it on this [page](https://github.com/bayu07750/MaterialAndroidForDevelopers/releases).
 
 ## 🚧 Status
 
