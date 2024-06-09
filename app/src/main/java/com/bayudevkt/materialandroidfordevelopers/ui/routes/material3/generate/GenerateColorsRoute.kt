@@ -1,9 +1,11 @@
 package com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.generate
 
 import android.net.Uri
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,16 +30,23 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddPhotoAlternate
+import androidx.compose.material.icons.rounded.Colorize
+import androidx.compose.material3.Button
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -60,15 +70,22 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bayudevkt.materialandroidfordevelopers.core.ui.R
+import com.bayudevkt.materialandroidfordevelopers.m3components.model.FILLED_BUTTON
+import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.Material3Route
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.colors.Material3ColorItem
+import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.colors.Material3ColorsRoute
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.colors.rememberMaterial3Colors
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.component.CodeView
+import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.component.Material3ComponentDetailRoute
+import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.component.Material3ComponentsRoute
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.component.TabComponent
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.component.TabComponentSaver
+import com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.typography.TypographyRoute
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.SettingsStateHolder
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.Shapes
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.Typography
 import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.isDarkTheme
+import com.bayudevkt.materialandroidfordevelopers.ui.routes.settings.rememberSettingsStateHolder
 import com.bayudevkt.materialandroidfordevelopers.ui.theme.MaterialAndroidForDevelopersTheme
 import com.bayudevkt.materialandroidfordevelopers.ui.utils.LargeTopAppBarWithBackButton
 import com.bayudevkt.materialandroidfordevelopers.ui.utils.toHexString
@@ -79,6 +96,7 @@ import com.skydoves.landscapist.coil.CoilImage
 import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.palette.PalettePlugin
 import com.skydoves.landscapist.palette.rememberPaletteState
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 val ColorSaver
@@ -173,229 +191,480 @@ private fun GenerateColorsContent(
             defaultSeedColor
         )
     }
-    var palette by rememberPaletteState(value = null)
+
     val paletteStyles = remember { PaletteStyle.entries.toList().toImmutableList() }
     var selectedPaletteStyle by rememberSaveable(paletteStyles, stateSaver = PaletteStyleSaver) {
-        mutableStateOf(
-            paletteStyles.first()
-        )
+        mutableStateOf(paletteStyles.first())
     }
     val generateColorScheme = rememberDynamicColorScheme(
         seedColor = selectedSeedColor,
         isDark = settingsStateHolder.isDarkTheme,
         style = selectedPaletteStyle
     )
-    var selectedTabComponent by rememberSaveable(stateSaver = TabComponentSaver) { mutableStateOf(TabComponent.PREVIEW) }
-    val exportGeneratedColors = rememberExportGeneratedColors(colorScheme = generateColorScheme)
-    val seedColorsLazyListState = rememberLazyListState()
-    val paletteStyleLazyListState = rememberLazyListState()
+    var selectedTabComponent by rememberSaveable(stateSaver = TabComponentSaver) {
+        mutableStateOf(TabComponent.PREVIEW)
+    }
+    var isPreviewMode by rememberSaveable { mutableStateOf(false) }
 
     com.bayudevkt.materialandroidfordevelopers.core.ui.theme.MaterialAndroidForDevelopersTheme(
         colorScheme = generateColorScheme,
         shapes = settingsStateHolder.Shapes,
         typography = settingsStateHolder.Typography,
     ) {
-        Scaffold(
-            modifier = modifier
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
-            topBar = {
-                Column {
-                    LargeTopAppBarWithBackButton(
-                        title = stringResource(id = R.string.generate_colors),
-                        onBack = onBack,
-                        scrollBehavior = scrollBehavior,
-                        onSettingsClicked = onSettingsClicked
-                    )
-                    TabComponent(
-                        onSelectedTabComponent = {
-                            selectedTabComponent = it
-                        },
-                        tabs = remember {
-                            listOf(TabComponent.PREVIEW, TabComponent.EXPORT)
+        AnimatedContent(targetState = isPreviewMode, label = "") { state ->
+            if (state) {
+                BackHandler {
+                    isPreviewMode = false
+                }
+                ApplyThemeContent(
+                    modifier = modifier,
+                    scrollBehavior = scrollBehavior,
+                    selectedTabComponent = selectedTabComponent,
+                    generateColorScheme = generateColorScheme,
+                    selectedImageUri = selectedImageUri,
+                    selectedSeedColor = selectedSeedColor,
+                    paletteStyles = paletteStyles,
+                    selectedPaletteStyle = selectedPaletteStyle,
+                    settingsStateHolder = settingsStateHolder,
+                    onBack = onBack
+                )
+            } else {
+                GeneratedColorsContent(
+                    modifier = modifier,
+                    scrollBehavior = scrollBehavior,
+                    onBack = onBack,
+                    onSettingsClicked = onSettingsClicked,
+                    selectedTabComponent = selectedTabComponent,
+                    generateColorScheme = generateColorScheme,
+                    selectedImageUri = selectedImageUri,
+                    selectedSeedColor = selectedSeedColor,
+                    paletteStyles = paletteStyles,
+                    selectedPaletteStyle = selectedPaletteStyle,
+                    onPreviewMode = {
+                        isPreviewMode = true
+                    },
+                    onChangeSelectedTabComponent = {
+                        selectedTabComponent = it
+                    },
+                    onChangeSelectedSeedColor = {
+                        selectedSeedColor = it
+                    },
+                    onChangeSelectedPaletteStyle = {
+                        selectedPaletteStyle = it
+                    }
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ApplyThemeContent(
+    selectedTabComponent: TabComponent,
+    generateColorScheme: ColorScheme,
+    selectedImageUri: Uri?,
+    selectedSeedColor: Color,
+    paletteStyles: ImmutableList<PaletteStyle>,
+    selectedPaletteStyle: PaletteStyle,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    settingsStateHolder: SettingsStateHolder = rememberSettingsStateHolder(),
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+) {
+    Scaffold(
+        modifier = modifier,
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            val pagerState = rememberPagerState { 6 }
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.weight(1f),
+                contentPadding = PaddingValues(16.dp),
+                pageSpacing = 16.dp,
+            ) { page ->
+                Surface(
+                    modifier = Modifier,
+                    shadowElevation = 2.dp,
+                    shape = MaterialTheme.shapes.large,
+                ) {
+                    val noContentWindowInsets = WindowInsets(0.dp)
+                    when (page) {
+                        0 -> {
+                            GeneratedColorsContent(
+                                scrollBehavior = scrollBehavior,
+                                selectedTabComponent = selectedTabComponent,
+                                generateColorScheme = generateColorScheme,
+                                selectedImageUri = selectedImageUri,
+                                selectedSeedColor = selectedSeedColor,
+                                paletteStyles = paletteStyles,
+                                selectedPaletteStyle = selectedPaletteStyle,
+                                onSettingsClicked = {},
+                                onBack = {},
+                                onPreviewMode = {},
+                                onChangeSelectedTabComponent = {},
+                                onChangeSelectedSeedColor = {},
+                                onChangeSelectedPaletteStyle = {},
+                                contentWindowInsets = noContentWindowInsets,
+                            )
                         }
+
+                        1 -> {
+                            Material3Route(
+                                onComponentsClicked = {},
+                                onColorsClicked = {},
+                                onTypographyClicked = {},
+                                onGenerateColorsClicked = {},
+                                onSettingsClicked = {},
+                                contentWindowInsets = noContentWindowInsets,
+                            )
+                        }
+
+                        2 -> {
+                            Material3ComponentsRoute(
+                                onComponentItemClicked = {},
+                                onBack = { },
+                                onSettingsClicked = { },
+                                contentWindowInsets = noContentWindowInsets,
+                            )
+                        }
+
+                        3 -> {
+                            Material3ComponentDetailRoute(
+                                componentTitle = FILLED_BUTTON,
+                                onComponentItemClicked = {},
+                                onBack = { },
+                                onSettingsClicked = { },
+                                contentWindowInsets = noContentWindowInsets,
+                            )
+                        }
+
+                        4 -> {
+                            Material3ColorsRoute(
+                                onBack = { },
+                                onSettingsClicked = { },
+                                contentWindowInsets = noContentWindowInsets,
+                            )
+                        }
+
+                        5 -> {
+                            TypographyRoute(
+                                onBack = { },
+                                onSettingsClicked = { },
+                                contentWindowInsets = noContentWindowInsets,
+                            )
+                        }
+                    }
+                }
+            }
+            Button(
+                onClick = {
+                    settingsStateHolder.applyTheme(
+                        selectedSeedColor,
+                        selectedPaletteStyle
+                    )
+                    onBack.invoke()
+                },
+                modifier = Modifier
+                    .padding(top = 0.dp, bottom = 16.dp)
+            ) {
+                Text(text = stringResource(id = R.string.apply_theme))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun GeneratedColorsContent(
+    selectedTabComponent: TabComponent,
+    onChangeSelectedTabComponent: (TabComponent) -> Unit,
+    generateColorScheme: ColorScheme,
+    selectedImageUri: Uri?,
+    selectedSeedColor: Color,
+    onChangeSelectedSeedColor: (Color) -> Unit,
+    paletteStyles: ImmutableList<PaletteStyle>,
+    selectedPaletteStyle: PaletteStyle,
+    onChangeSelectedPaletteStyle: (PaletteStyle) -> Unit,
+    onBack: () -> Unit,
+    onSettingsClicked: () -> Unit,
+    onPreviewMode: () -> Unit,
+    modifier: Modifier = Modifier,
+    scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(),
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+) {
+    Scaffold(
+        modifier = modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        contentWindowInsets = contentWindowInsets,
+        topBar = {
+            Column {
+                LargeTopAppBarWithBackButton(
+                    title = stringResource(id = R.string.generate_colors),
+                    onBack = onBack,
+                    scrollBehavior = scrollBehavior,
+                    onSettingsClicked = onSettingsClicked
+                )
+                TabComponent(
+                    onSelectedTabComponent = onChangeSelectedTabComponent,
+                    tabs = remember {
+                        listOf(TabComponent.PREVIEW, TabComponent.EXPORT)
+                    }
+                )
+            }
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = onPreviewMode,
+                text = {
+                    Text(text = stringResource(id = R.string.use_theme))
+                },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Rounded.Colorize,
+                        contentDescription = null
+                    )
+                },
+                elevation = FloatingActionButtonDefaults.elevation(
+                    defaultElevation = 4.dp,
+                )
+            )
+        },
+        floatingActionButtonPosition = FabPosition.Center,
+    ) { innerPadding ->
+        val reusableModifier = Modifier.padding(innerPadding)
+        if (selectedTabComponent == TabComponent.EXPORT) {
+            ExportContent(
+                content = rememberExportGeneratedColors(colorScheme = generateColorScheme),
+                modifier = reusableModifier
+            )
+        } else {
+            PreviewContent(
+                colorSchema = generateColorScheme,
+                selectedImageUri = selectedImageUri,
+                seedColor = selectedSeedColor,
+                onChangeSeedColor = onChangeSelectedSeedColor,
+                paletteStyles = paletteStyles,
+                paletteStyle = selectedPaletteStyle,
+                onChangePaletteStyle = onChangeSelectedPaletteStyle,
+                modifier = reusableModifier,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PreviewContent(
+    colorSchema: ColorScheme,
+    selectedImageUri: Uri?,
+    seedColor: Color,
+    onChangeSeedColor: (Color) -> Unit,
+    paletteStyles: ImmutableList<PaletteStyle>,
+    paletteStyle: PaletteStyle,
+    onChangePaletteStyle: (PaletteStyle) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = rememberMaterial3Colors(colorSchema)
+    val seedColorsLazyListState = rememberLazyListState()
+    val paletteStyleLazyListState = rememberLazyListState()
+    var palette by rememberPaletteState(value = null)
+
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Adaptive(100.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        /* region section selected image */
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            }
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Box(
+                    modifier = Modifier,
+                    contentAlignment = Alignment.Center
+                ) {
+                    CoilImage(
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .width(120.dp)
+                            .aspectRatio(1f / 1f)
+                            .clip(MaterialTheme.shapes.medium),
+                        imageModel = {
+                            selectedImageUri
+                        },
+                        imageOptions = ImageOptions(
+                            contentScale = ContentScale.Crop,
+                        ),
+                        component = rememberImageComponent {
+                            +PalettePlugin {
+                                palette = it
+                            }
+                        },
+                    )
+                    Box(
+                        modifier = Modifier
+                            .graphicsLayer {
+                                translationX = 16.dp.toPx()
+                            }
+                            .align(Alignment.TopEnd)
+                            .size(32.dp)
+                            .background(color = seedColor, shape = CircleShape)
                     )
                 }
             }
-        ) { innerPadding ->
-            val reusableModifier = Modifier.padding(innerPadding)
-            if (selectedTabComponent == TabComponent.EXPORT) {
-                CodeView(
-                    modifier = reusableModifier
-                        .fillMaxSize(),
-                    snippetCode = exportGeneratedColors,
-                )
-            } else {
-                val colors = rememberMaterial3Colors(generateColorScheme)
+        }
+        /* endregion section selected image */
 
-                LazyVerticalGrid(
-                    modifier = reusableModifier,
-                    columns = GridCells.Adaptive(100.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(16.dp)
+        /* region section seed colors */
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            }
+        ) {
+            Surface(
+                modifier = Modifier
+                    .padding(top = 16.dp),
+                tonalElevation = 2.dp,
+                shape = MaterialTheme.shapes.large
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
                 ) {
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
+                    Text(
+                        text = stringResource(R.string.seed_colors),
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        state = seedColorsLazyListState,
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
+                        items(palette?.swatches ?: emptyList()) { swatch ->
+                            val color = Color(swatch.rgb)
                             Box(
-                                modifier = Modifier,
-                                contentAlignment = Alignment.Center
-                            ) {
-                                CoilImage(
-                                    modifier = Modifier
-                                        .padding(top = 16.dp)
-                                        .width(120.dp)
-                                        .aspectRatio(1f / 1f)
-                                        .clip(MaterialTheme.shapes.medium),
-                                    imageModel = {
-                                        selectedImageUri
-                                    },
-                                    imageOptions = ImageOptions(
-                                        contentScale = ContentScale.Crop,
-                                    ),
-                                    component = rememberImageComponent {
-                                        +PalettePlugin {
-                                            palette = it
-                                        }
-                                    },
-                                )
-                                Box(
-                                    modifier = Modifier
-                                        .graphicsLayer {
-                                            translationX = 16.dp.toPx()
-                                        }
-                                        .align(Alignment.TopEnd)
-                                        .size(32.dp)
-                                        .background(color = selectedSeedColor, shape = CircleShape)
-                                )
-                            }
-                        }
-                    }
-
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
-                    ) {
-                        Surface(
-                            modifier = Modifier
-                                .padding(top = 16.dp),
-                            tonalElevation = 2.dp,
-                            shape = MaterialTheme.shapes.large
-                        ) {
-                            Column(
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 16.dp),
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.seed_colors),
-                                    modifier = Modifier.padding(horizontal = 16.dp),
-                                    style = MaterialTheme.typography.labelLarge
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                LazyRow(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    state = seedColorsLazyListState,
-                                    contentPadding = PaddingValues(horizontal = 16.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                ) {
-                                    items(palette?.swatches ?: emptyList()) { swatch ->
-                                        val color = Color(swatch.rgb)
-                                        Box(
-                                            modifier = Modifier
-                                                .clickable(
-                                                    role = Role.Button,
-                                                    onClick = {
-                                                        selectedSeedColor = color
-                                                    }
-                                                )
-                                                .size(44.dp)
-                                                .background(
-                                                    color = color,
-                                                    shape = CircleShape
-                                                )
-                                                .border(
-                                                    width = if (selectedSeedColor == color) 4.dp else 0.dp,
-                                                    color = if (selectedSeedColor == color) MaterialTheme.colorScheme.onSecondaryContainer else Color.Transparent,
-                                                    shape = CircleShape,
-                                                )
-                                        )
-                                    }
-                                }
-                            }
+                                    .clickable(
+                                        role = Role.Button,
+                                        onClick = {
+                                            onChangeSeedColor(color)
+                                        }
+                                    )
+                                    .size(44.dp)
+                                    .background(
+                                        color = color,
+                                        shape = CircleShape
+                                    )
+                                    .border(
+                                        width = if (seedColor == color) 4.dp else 0.dp,
+                                        color = if (seedColor == color) MaterialTheme.colorScheme.onSecondaryContainer else Color.Transparent,
+                                        shape = CircleShape,
+                                    )
+                            )
                         }
-                    }
-
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
-                    ) {
-                        Surface(
-                            modifier = Modifier
-                                .padding(top = 16.dp),
-                            tonalElevation = 2.dp,
-                            shape = MaterialTheme.shapes.large
-                        ) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 16.dp),
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.palette_style),
-                                    modifier = Modifier.padding(horizontal = 16.dp),
-                                    style = MaterialTheme.typography.labelLarge
-                                )
-                                Spacer(modifier = Modifier.height(8.dp))
-                                LazyRow(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    state = paletteStyleLazyListState,
-                                    contentPadding = PaddingValues(horizontal = 16.dp),
-                                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                                ) {
-                                    itemsIndexed(paletteStyles) { index, paletteStyle ->
-                                        val selected = selectedPaletteStyle == paletteStyle
-                                        InputChip(
-                                            selected = selected,
-                                            onClick = { selectedPaletteStyle = paletteStyle },
-                                            label = {
-                                                Text(text = paletteStyle.name)
-                                            }
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    item(
-                        span = {
-                            GridItemSpan(maxLineSpan)
-                        }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.material_3_colors),
-                            modifier = Modifier
-                                .padding(top = 16.dp),
-                            style = MaterialTheme.typography.labelLarge
-                        )
-                    }
-
-                    items(colors) {
-                        Material3ColorItem(item = it)
                     }
                 }
             }
         }
+        /* endregion section seed colors */
+
+        /* region section palette style */
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            }
+        ) {
+            Surface(
+                modifier = Modifier
+                    .padding(top = 16.dp),
+                tonalElevation = 2.dp,
+                shape = MaterialTheme.shapes.large
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.palette_style),
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LazyRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        state = paletteStyleLazyListState,
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        itemsIndexed(paletteStyles) { _, style ->
+                            val selected = paletteStyle == style
+                            InputChip(
+                                selected = selected,
+                                onClick = {
+                                    onChangePaletteStyle(style)
+                                },
+                                label = {
+                                    Text(text = style.name)
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        /* endregion section palette style */
+
+        /* region section label material 3 colors */
+        item(
+            span = {
+                GridItemSpan(maxLineSpan)
+            }
+        ) {
+            Text(
+                text = stringResource(R.string.material_3_colors),
+                modifier = Modifier
+                    .padding(top = 16.dp),
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+        /* endregion section label material 3 colors */
+
+        /* region section material 3 colors */
+        items(colors) {
+            Material3ColorItem(item = it)
+        }
+        /* endregion section material 3 colors */
     }
+}
+
+@Composable
+private fun ExportContent(
+    content: String,
+    modifier: Modifier = Modifier
+) {
+    CodeView(
+        modifier = modifier
+            .fillMaxSize(),
+        snippetCode = content,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
