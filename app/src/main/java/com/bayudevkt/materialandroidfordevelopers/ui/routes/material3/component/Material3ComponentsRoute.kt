@@ -2,6 +2,7 @@ package com.bayudevkt.materialandroidfordevelopers.ui.routes.material3.component
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Collections
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -38,10 +40,32 @@ fun Material3ComponentsRoute(
     onBack: () -> Unit,
     onSettingsClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    data: ImmutableMap<CategoryComponent, List<Component>> = remember { availableMaterial3Components }
+
+) {
+    Material3ComponentsRoute(
+        onBack = onBack,
+        onSettingsClicked = onSettingsClicked,
+        modifier = modifier,
+        onComponentItemClicked = onComponentItemClicked,
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun Material3ComponentsRoute(
+    onBack: () -> Unit,
+    onSettingsClicked: () -> Unit,
+    onComponentItemClicked: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    data: ImmutableMap<CategoryComponent, List<Component>> = remember { availableMaterial3Components },
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
+        modifier = modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        contentWindowInsets = contentWindowInsets,
         topBar = {
             LargeTopAppBarWithBackButton(
                 title = "Components",
@@ -50,8 +74,6 @@ fun Material3ComponentsRoute(
                 onSettingsClicked = onSettingsClicked,
             )
         },
-        modifier = modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         LazyColumn(
             modifier = Modifier

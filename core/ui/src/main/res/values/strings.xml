@@ -87,4 +87,6 @@
     <string name="seed_colors">Seed Colors</string>
     <string name="english">English</string>
     <string name="indonesia">Indonesia</string>
+    <string name="apply_theme">Apply theme</string>
+    <string name="use_theme">Use theme</string>
 </resources>

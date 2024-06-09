@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -117,6 +118,7 @@ fun Material3ComponentDetailRoute(
     onBack: () -> Unit,
     onSettingsClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    contentWindowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val component = remember {
@@ -147,6 +149,7 @@ fun Material3ComponentDetailRoute(
             }
         } else {
             Scaffold(
+                contentWindowInsets = contentWindowInsets,
                 topBar = {
                     ConditionalTopAppBar(
                         componentTitle = componentTitle,

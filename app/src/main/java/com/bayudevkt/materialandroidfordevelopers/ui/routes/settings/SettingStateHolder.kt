@@ -126,39 +126,51 @@ class SettingsStateHolder(
 
     fun onChangeDarkModeSetting(value: DarkModeSetting) {
         selectedDarkModeSetting = value
-        onChangeSettingPreference(settingPreference.copy(darkMode = value.name))
+        onChangeSettingPreference(settingPreference)
     }
 
     fun onChangeCurrentSeedColor(value: Color) {
         currentSeedColor = value
-        onChangeSettingPreference(settingPreference.copy(colorTheme = value.toHex()))
+        onChangeSettingPreference(settingPreference)
     }
 
     fun onChangeUseSystemTheme(value: Boolean) {
         useSystemTheme = value
-        onChangeSettingPreference(settingPreference.copy(systemTheme = value))
+        onChangeSettingPreference(settingPreference)
     }
 
     fun onChangeShapeSetting(value: ShapeSetting) {
         shapeSetting = value
-        onChangeSettingPreference(settingPreference.copy(shape = value.name))
+        onChangeSettingPreference(settingPreference)
     }
 
     fun onChangeFontSetting(value: FontSetting) {
         fontSetting = value
-        onChangeSettingPreference(settingPreference.copy(font = value.name))
+        onChangeSettingPreference(settingPreference)
     }
 
     fun onChangeLanguageSetting(value: LanguageSetting) {
         languageSetting = value
-        onChangeSettingPreference(settingPreference.copy(language = value.name))
+        onChangeSettingPreference(settingPreference)
 
         AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(value.code))
     }
 
     fun onChangePaletteStyle(value: PaletteStyle) {
         paletteStyle = value
-        onChangeSettingPreference(settingPreference.copy(paletteStyle = value.name))
+        onChangeSettingPreference(settingPreference)
+    }
+
+    fun applyTheme(
+        color: Color,
+        paletteStyle: PaletteStyle,
+    ) {
+        if (useSystemTheme) {
+            useSystemTheme = false
+        }
+        currentSeedColor = color
+        this.paletteStyle = paletteStyle
+        onChangeSettingPreference(settingPreference)
     }
 
     companion object {

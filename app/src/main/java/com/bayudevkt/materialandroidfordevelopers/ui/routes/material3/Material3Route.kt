@@ -4,6 +4,7 @@ import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
@@ -65,7 +67,6 @@ fun defaultLargeTopAppBarColors(): TopAppBarColors {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Material3Route(
     onComponentsClicked: () -> Unit,
@@ -75,17 +76,40 @@ fun Material3Route(
     onSettingsClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Material3Route(
+        onComponentsClicked = onComponentsClicked,
+        onColorsClicked = onColorsClicked,
+        onTypographyClicked = onTypographyClicked,
+        onGenerateColorsClicked = onGenerateColorsClicked,
+        onSettingsClicked = onSettingsClicked,
+        modifier = modifier,
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets,
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun Material3Route(
+    onSettingsClicked: () -> Unit,
+    onComponentsClicked: () -> Unit,
+    onColorsClicked: () -> Unit,
+    onTypographyClicked: () -> Unit,
+    onGenerateColorsClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     Scaffold(
+        modifier = modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
+        contentWindowInsets = contentWindowInsets,
         topBar = {
             MainLargeTopAppBar(
-                title = "Material Android for Developers",
+                title = stringResource(id = R.string.app_name),
                 scrollBehavior = scrollBehavior,
                 onSettingsClicked = onSettingsClicked
             )
         },
-        modifier = modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         Column(
             modifier = Modifier
