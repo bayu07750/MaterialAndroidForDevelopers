@@ -65,6 +65,7 @@ import SmallFabContentSourceCode
 import SnackbarContentSourceCode
 import SnackbarWithActionContentSourceCode
 import SuggestionChipContentSourceCode
+import SwipeRefreshLayoutContentSourceCode
 import SwitchContentSourceCode
 import TabRowContentSourceCode
 import TextButtonContentSourceCode
@@ -179,6 +180,7 @@ const val SLIDER = "Slider"
 const val SLIDER_WITH_STEP = "SliderWithStep"
 const val SLIDER_WITH_CUSTOM_THUMB = "SliderWithCustomThumb"
 const val RANGE_SLIDER = "RangeSlider"
+const val SWIPE_REFRESH_LAYOUT = "SwipeRefreshLayout"
 
 const val BOTTOM_APP_BARS = "BottomAppBars"
 const val BOTTOM_SHEETS = "BottomSheets"
@@ -286,6 +288,7 @@ val allAvailableComponents: List<String>
         SLIDER_WITH_STEP,
         SLIDER_WITH_CUSTOM_THUMB,
         RANGE_SLIDER,
+        SWIPE_REFRESH_LAYOUT,
     ).toImmutableList()
 
 private val categoryActions
@@ -391,6 +394,11 @@ private val categoryCommunication
                         code = RichTooltipContentSourceCode.code,
                     ),
                 )
+            ),
+            Component(
+                title = SWIPE_REFRESH_LAYOUT,
+                description = null,
+                code = SwipeRefreshLayoutContentSourceCode.code
             )
         )
 

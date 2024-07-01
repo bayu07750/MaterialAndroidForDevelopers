@@ -11,10 +11,10 @@
       <SelectionState runConfigName="PreviewTextFieldContent">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="PreviewOutlinedTextFieldContent">
+      <SelectionState runConfigName="Generate Baseline Profile for app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="Generate Baseline Profile for app">
+      <SelectionState runConfigName="PreviewSwipeRefreshLayoutContent">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
