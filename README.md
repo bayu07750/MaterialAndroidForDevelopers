@@ -23,10 +23,6 @@ Material Android For Developers (MAFD) allows you to explore all components curr
 
 Download it on this [page](https://github.com/bayu07750/MaterialAndroidForDevelopers/releases).
 
-## 🚧 Status
-
-The app is still in its early stages of development, and many changes may occur in the future. However, I am currently satisfied with its functionality.
-
 ## ✨ Features
 
 - Browse all components currently supported by Compose Material 3.
