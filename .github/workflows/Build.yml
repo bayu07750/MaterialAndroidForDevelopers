@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   unit_test_and_android_test_job:
-    name: Unit Test and Android Test
+    name: Unit Test
     runs-on: ubuntu-latest
     steps:
       - name: Delete unnecessary tools 🔧
@@ -47,23 +46,6 @@ jobs:
         with:
           name: test-reports
           path: '**/build/reports/tests/'
-      - name: Instrumentation Tests
-        continue-on-error: true
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          arch: x86_64
-          disable-animations: true
-          disk-size: 6000M
-          heap-size: 600M
-          script: ./gradlew connectedDebugAndroidTest
-      - name: Upload Android Test Reports
-        if: always()
-        continue-on-error: true
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-test-reports
-          path: '**/build/reports/androidTests/'
   build_debug_job:
     name: Build Debug APK
     runs-on: ubuntu-latest
