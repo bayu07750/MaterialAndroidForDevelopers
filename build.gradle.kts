@@ -5,10 +5,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.mikpenz.aboutlibraries) apply false
     alias(libs.plugins.google.dagger.hilt.android) apply false
-    alias(libs.plugins.google.gms.google.services) apply false
-    alias(libs.plugins.google.firebase.crashlytics) apply false
-    alias(libs.plugins.google.firebase.performance) apply false
     alias(libs.plugins.android.test) apply false
     alias(libs.plugins.baselineprofile) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.compose.compiler) apply false
 }
