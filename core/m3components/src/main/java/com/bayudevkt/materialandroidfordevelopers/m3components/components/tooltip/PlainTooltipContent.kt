@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.bayudevkt.materialandroidfordevelopers.core.ui.theme.MaterialAndroidForDevelopersTheme
 import kotlinx.coroutines.launch
 
+// TODO 19:51 23-Sep-2024:
 /* region */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,8 +37,7 @@ fun PlainTooltipContent(
                 positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
                 tooltip = {
                     PlainTooltip(
-                        caretProperties = TooltipDefaults.caretProperties,
-
+//                        caretProperties = TooltipDefaults.caretProperties,
                     ) {
                         Text(text = "Hello World!")
                     }
