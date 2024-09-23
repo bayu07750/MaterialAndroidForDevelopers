@@ -180,7 +180,7 @@ const val SLIDER = "Slider"
 const val SLIDER_WITH_STEP = "SliderWithStep"
 const val SLIDER_WITH_CUSTOM_THUMB = "SliderWithCustomThumb"
 const val RANGE_SLIDER = "RangeSlider"
-const val SWIPE_REFRESH_LAYOUT = "SwipeRefreshLayout"
+const val SWIPE_REFRESH_LAYOUT = "Pull To Refresh"
 
 const val BOTTOM_APP_BARS = "BottomAppBars"
 const val BOTTOM_SHEETS = "BottomSheets"

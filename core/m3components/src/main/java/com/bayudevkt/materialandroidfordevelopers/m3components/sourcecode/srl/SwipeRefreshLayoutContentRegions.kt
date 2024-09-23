@@ -10,31 +10,37 @@
 fun SwipeRefreshLayoutContent(
     modifier: Modifier = Modifier,
 ) {
+    var isRefreshing by remember { mutableStateOf(false) }
     val pullToRefreshState = rememberPullToRefreshState()
-    LaunchedEffect(pullToRefreshState.isRefreshing) {
-        if (pullToRefreshState.isRefreshing) {
-            delay(2000)
-            pullToRefreshState.endRefresh()
-        }
-    }
-    Box(
+    val coroutineScope = rememberCoroutineScope()
+
+    PullToRefreshBox(
+        isRefreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            coroutineScope.launch {
+                delay(2000)
+                isRefreshing = false
+            }
+        },
+        state = pullToRefreshState,
         modifier = modifier
-            .nestedScroll(pullToRefreshState.nestedScrollConnection),
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center,
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(count = 100) { index ->
-                ListItem(
-                    headlineContent = { Text(text = ) }
-                )
+        if (isRefreshing) {
+            Text("Loading data...")
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                items(count = 100) { index ->
+                    ListItem(
+                        headlineContent = { Text(text = ) }
+                    )
+                }
             }
         }
-        PullToRefreshContainer(
-            state = pullToRefreshState,
-            modifier = Modifier
-                .align(Alignment.TopCenter),
-        )
     }
 }
 

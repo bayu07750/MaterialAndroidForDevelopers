@@ -36,9 +36,7 @@ fun PlainTooltipContent(
             TooltipBox(
                 positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(),
                 tooltip = {
-                    PlainTooltip(
-//                        caretProperties = TooltipDefaults.caretProperties,
-                    ) {
+                    PlainTooltip {
                         Text(text = "Hello World!")
                     }
                 },
