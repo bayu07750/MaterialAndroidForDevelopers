@@ -30,6 +30,8 @@ import com.bayudevkt.materialandroidfordevelopers.m3components.components.chips.
 import com.bayudevkt.materialandroidfordevelopers.m3components.components.chips.FilterChipContent
 import com.bayudevkt.materialandroidfordevelopers.m3components.components.chips.InputChipContent
 import com.bayudevkt.materialandroidfordevelopers.m3components.components.chips.SuggestionChipContent
+import com.bayudevkt.materialandroidfordevelopers.m3components.components.corousel.HorizontalMultiBrowseCarouselContent
+import com.bayudevkt.materialandroidfordevelopers.m3components.components.corousel.HorizontalUncontainedCarouselContent
 import com.bayudevkt.materialandroidfordevelopers.m3components.components.datepicker.DatePickerContent
 import com.bayudevkt.materialandroidfordevelopers.m3components.components.datepicker.DatePickerDialogContent
 import com.bayudevkt.materialandroidfordevelopers.m3components.components.datepicker.DateRangePickerContent
@@ -117,6 +119,8 @@ import com.bayudevkt.materialandroidfordevelopers.m3components.model.FILLED_TONA
 import com.bayudevkt.materialandroidfordevelopers.m3components.model.FILLED_TONAL_ICON_TOGGLE_BUTTON
 import com.bayudevkt.materialandroidfordevelopers.m3components.model.FILTER_CHIP
 import com.bayudevkt.materialandroidfordevelopers.m3components.model.HORIZONTAL_DIVIDER
+import com.bayudevkt.materialandroidfordevelopers.m3components.model.HORIZONTAL_MULTI_BROWSE_CAROUSEL
+import com.bayudevkt.materialandroidfordevelopers.m3components.model.HORIZONTAL_UNCONTAINED_CAROUSEL
 import com.bayudevkt.materialandroidfordevelopers.m3components.model.ICON_BUTTON
 import com.bayudevkt.materialandroidfordevelopers.m3components.model.ICON_TOGGLE_BUTTON
 import com.bayudevkt.materialandroidfordevelopers.m3components.model.INPUT_CHIP
@@ -254,6 +258,8 @@ fun RenderComponent(
         SLIDER_WITH_CUSTOM_THUMB -> SliderWithCustomThumbContent(modifier)
         RANGE_SLIDER -> RangeSliderContent(modifier)
         SWIPE_REFRESH_LAYOUT -> SwipeRefreshLayoutContent(modifier)
+        HORIZONTAL_MULTI_BROWSE_CAROUSEL -> HorizontalMultiBrowseCarouselContent(modifier)
+        HORIZONTAL_UNCONTAINED_CAROUSEL -> HorizontalUncontainedCarouselContent(modifier)
         else -> {}
     }
 }

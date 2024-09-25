@@ -33,6 +33,8 @@ import FilledTonalIconToggleButtonContentSourceCode
 import FilledTontalButtonContentSourceCode
 import FilterChipContentSourceCode
 import HorizontalDividerContentSourceCode
+import HorizontalMultiBrowseCarouselContentSourceCode
+import HorizontalUncontainedCarouselContentSourceCode
 import IconButtonContentSourceCode
 import IconToggleButtonContentSourceCode
 import InputChipContentSourceCode
@@ -181,6 +183,8 @@ const val SLIDER_WITH_STEP = "SliderWithStep"
 const val SLIDER_WITH_CUSTOM_THUMB = "SliderWithCustomThumb"
 const val RANGE_SLIDER = "RangeSlider"
 const val SWIPE_REFRESH_LAYOUT = "Pull To Refresh"
+const val HORIZONTAL_MULTI_BROWSE_CAROUSEL = "HorizontalMultiBrowseCarousel"
+const val HORIZONTAL_UNCONTAINED_CAROUSEL = "HorizontalUncontainedCarousel"
 
 const val BOTTOM_APP_BARS = "BottomAppBars"
 const val BOTTOM_SHEETS = "BottomSheets"
@@ -205,6 +209,7 @@ const val CHIPS = "Chips"
 const val TOOLTIPS = "Tooltips"
 const val SLIDERS = "Sliders"
 const val SNACKBARS = "Snackbars"
+const val CAROUSELS = "Carousels"
 
 /* endregion constant */
 
@@ -444,6 +449,20 @@ private val categoryContainment
                 description = R.string.list_item_desc,
                 code = ListItemContentSourceCode.code,
             ),
+            Component(
+                title = CAROUSELS,
+                description = R.string.carousels_desc,
+                subComponent = listOf(
+                    Component(
+                        title = HORIZONTAL_MULTI_BROWSE_CAROUSEL,
+                        code = HorizontalMultiBrowseCarouselContentSourceCode.code
+                    ),
+                    Component(
+                        title = HORIZONTAL_UNCONTAINED_CAROUSEL,
+                        code = HorizontalUncontainedCarouselContentSourceCode.code,
+                    )
+                ),
+            )
         )
 
 private val categoryNavigation
