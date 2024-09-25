@@ -89,4 +89,5 @@
     <string name="indonesia">Indonesia</string>
     <string name="apply_theme">Apply theme</string>
     <string name="use_theme">Use theme</string>
+    <string name="carousels_desc">Carousels show a collection of items that can be scrolled on and off the screen</string>
 </resources>

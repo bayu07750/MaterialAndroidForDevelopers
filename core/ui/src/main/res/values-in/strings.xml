@@ -90,4 +90,5 @@
     <string name="indonesia">Bahasa Indonesia</string>
     <string name="apply_theme">Terapkan tema</string>
     <string name="use_theme">Gunakan tema</string>
+    <string name="carousels_desc">Carousels show a collection of items that can be scrolled on and off the screen</string>
 </resources>
