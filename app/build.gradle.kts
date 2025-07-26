@@ -5,6 +5,9 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.mikpenz.aboutlibraries)
     alias(libs.plugins.google.dagger.hilt.android)
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.google.firebase.performance)
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.compose.compiler)
 }
@@ -35,6 +38,24 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            firebaseCrashlytics {
+                mappingFileUploadEnabled = true
+            }
+            addManifestPlaceholders(
+                mapOf(
+                    "crashlyticsEnabled" to true,
+                    "performanceEnabled" to true,
+                )
+            )
+        }
+
+        debug {
+            addManifestPlaceholders(
+                mapOf(
+                    "crashlyticsEnabled" to false,
+                    "performanceEnabled" to false,
+                )
+            )
         }
     }
     compileOptions {
@@ -106,6 +127,10 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.androidx.startup.runtime)
 
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.perf)
 }
 
 kapt {
